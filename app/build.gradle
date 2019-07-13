@@ -22,6 +22,7 @@ android {
             buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
             buildConfigField "String", "APP_VERSION", "\"${app_version}\""
             buildConfigField "String", "API_VERSION", "\"${api_version}\""
+            buildConfigField "String", "WEATHER_API_KEY", "\"${weatherAPIKey}\""
         }
         debug {
             minifyEnabled false
@@ -30,6 +31,7 @@ android {
             buildConfigField "String", "BASE_URL_PROTOCOL", "\"HTTPS\""
             buildConfigField "String", "APP_VERSION", "\"${app_version}\""
             buildConfigField "String", "API_VERSION", "\"${api_version}\""
+            buildConfigField "String", "WEATHER_API_KEY", "\"${weatherAPIKey}\""
         }
     }
 }
