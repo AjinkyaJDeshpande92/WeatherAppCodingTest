@@ -2,6 +2,8 @@ package com.ajinkyad.weatherApp.di.module;
 
 import androidx.annotation.NonNull;
 
+import com.ajinkyad.weatherApp.BuildConfig;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -23,7 +25,7 @@ public class NetworkModule {
     @Provides
     @Singleton
     Retrofit provideRetrofitClient(@NonNull OkHttpClient okHttpClient) {
-        String BASE_URL = "http://staging-api.dahmakan.com/";
+        String BASE_URL = BuildConfig.BASE_URL;
         return new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .client(okHttpClient)
