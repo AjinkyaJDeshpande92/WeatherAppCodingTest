@@ -1,0 +1,13 @@
+{
+  "cities":[
+    {
+      "name":"Sydney"
+    },
+    {
+      "name":"Melbourne"
+    },
+    {
+      "name":"Wollongong"
+    }
+  ]
+}
