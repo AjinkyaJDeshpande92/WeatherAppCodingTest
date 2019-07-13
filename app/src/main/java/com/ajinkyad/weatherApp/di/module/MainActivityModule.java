@@ -1,7 +1,7 @@
 package com.ajinkyad.weatherApp.di.module;
 
 
-import com.ajinkyad.weatherApp.ui.ScrollingActivity;
+import com.ajinkyad.weatherApp.ui.WeatherDetailsActivity;
 
 import dagger.Module;
 import dagger.android.ContributesAndroidInjector;
@@ -9,5 +9,5 @@ import dagger.android.ContributesAndroidInjector;
 @Module
 public abstract class MainActivityModule {
     @ContributesAndroidInjector()
-    abstract ScrollingActivity contributeScrollingActivity();
+    abstract WeatherDetailsActivity contributeScrollingActivity();
 }
