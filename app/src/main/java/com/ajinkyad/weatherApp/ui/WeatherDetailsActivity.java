@@ -2,6 +2,9 @@ package com.ajinkyad.weatherApp.ui;
 
 import android.os.Bundle;
 import android.text.format.DateFormat;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -10,10 +13,13 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.ajinkyad.weatherApp.R;
 import com.ajinkyad.weatherApp.databinding.ActivityScrollingBinding;
+import com.ajinkyad.weatherApp.repository.model.CitiesResponse;
 import com.ajinkyad.weatherApp.repository.model.WeatherResponse;
 import com.ajinkyad.weatherApp.viewmodel.WeatherViewModel;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 import javax.inject.Inject;
@@ -26,6 +32,8 @@ public class WeatherDetailsActivity extends AppCompatActivity {
     public ViewModelProvider.Factory viewModelFactory;
     private WeatherViewModel weatherViewModel;
     private ActivityScrollingBinding dataBinding;
+    private ArrayAdapter<String> spinnerArrayAdapter;
+    private ArrayList<CitiesResponse> citiesList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,40 @@ public class WeatherDetailsActivity extends AppCompatActivity {
         dataBinding = DataBindingUtil.setContentView(this, R.layout.activity_scrolling);
         setSupportActionBar(dataBinding.toolbar);
         initViewModel();
+        initCitySpinnerControl();
+        initSwipeRefreshListener();
         fetchCitiesList();
+    }
+
+    private void initSwipeRefreshListener() {
+
+        dataBinding.weatherSwipeRefreshLayout.setOnRefreshListener(() -> {
+            dataBinding.weatherSwipeRefreshLayout.setRefreshing(true);
+            fetchWeatherDetails(citiesList.get((int) dataBinding.citiesListSpinner.getSelectedItemId()).getName());
+        });
+    }
+
+    private void initCitySpinnerControl() {
+        spinnerArrayAdapter = new ArrayAdapter<>
+                (this, android.R.layout.simple_spinner_item,
+                        getSpinnerCityDataset(new ArrayList<>()));
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+        dataBinding.citiesListSpinner.setAdapter(spinnerArrayAdapter);
+
+        dataBinding.citiesListSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                fetchWeatherDetails(citiesList.get(position).getName());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
     }
 
     private void fetchCitiesList() {
@@ -41,9 +82,28 @@ public class WeatherDetailsActivity extends AppCompatActivity {
             if (citiesResponseList != null && !citiesResponseList.isEmpty()) {
                 //WE have some data in the Cities List
                 //Get the 0th Index and render as default data to the User.
+                citiesList = (ArrayList<CitiesResponse>) citiesResponseList;
+                setSpinnerData(citiesResponseList);
                 fetchWeatherDetails(citiesResponseList.get(0).getName());
             }
         });
+    }
+
+    private void setSpinnerData(List<CitiesResponse> citiesResponseList) {
+
+        spinnerArrayAdapter.clear();
+        spinnerArrayAdapter.addAll(getSpinnerCityDataset(citiesResponseList));
+        spinnerArrayAdapter.notifyDataSetChanged();
+    }
+
+    private ArrayList<String> getSpinnerCityDataset(List<CitiesResponse> citiesResponseList) {
+
+        ArrayList<String> citiesList = new ArrayList<>();
+
+        for (CitiesResponse cityItem : citiesResponseList) {
+            citiesList.add(cityItem.getName());
+        }
+        return citiesList;
     }
 
     private void setWeatherDetails(WeatherResponse weatherResponse) {
@@ -52,6 +112,7 @@ public class WeatherDetailsActivity extends AppCompatActivity {
         dataBinding.setUpdatedTime(getDisplayTimeFromMillis(weatherResponse.getTime()));
         dataBinding.setWind(weatherResponse.getWindDetails().getSpeed() + " km/h");
         dataBinding.setWeather(getWeatherDetails(weatherResponse));
+        dataBinding.weatherSwipeRefreshLayout.setRefreshing(false);
     }
 
     private String getDisplayTimeFromMillis(long timestamp) {
@@ -69,7 +130,6 @@ public class WeatherDetailsActivity extends AppCompatActivity {
             //Lets display it to the User.
             return weatherResponse.getWeather().get(0).getMain() + " - " + weatherResponse.getWeather().get(0).getDescription();
         }
-
         return null;
     }
 
