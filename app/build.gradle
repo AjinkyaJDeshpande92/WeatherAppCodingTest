@@ -23,6 +23,7 @@ android {
             buildConfigField "String", "APP_VERSION", "\"${app_version}\""
             buildConfigField "String", "API_VERSION", "\"${api_version}\""
             buildConfigField "String", "WEATHER_API_KEY", "\"${weatherAPIKey}\""
+            buildConfigField "int", "ROOM_DB_VERSION", "${db_version}"
         }
         debug {
             minifyEnabled false
@@ -32,6 +33,7 @@ android {
             buildConfigField "String", "APP_VERSION", "\"${app_version}\""
             buildConfigField "String", "API_VERSION", "\"${api_version}\""
             buildConfigField "String", "WEATHER_API_KEY", "\"${weatherAPIKey}\""
+            buildConfigField "int", "ROOM_DB_VERSION", "${db_version}"
         }
     }
 }
@@ -59,6 +61,15 @@ dependencies {
     //Viewmodel dependencies
     implementation "android.arch.lifecycle:extensions:1.1.1"
     implementation "android.arch.lifecycle:viewmodel:1.1.1"
+
+    //room
+    def room_version = "2.1.0"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    //Gson
+    implementation 'com.google.code.gson:gson:2.8.5'
 }
 
 def computeVersionCode() {
