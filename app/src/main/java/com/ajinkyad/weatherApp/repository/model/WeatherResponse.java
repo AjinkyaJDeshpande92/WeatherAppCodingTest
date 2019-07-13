@@ -1,6 +1,7 @@
 package com.ajinkyad.weatherApp.repository.model;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
@@ -30,8 +31,6 @@ public class WeatherResponse {
      * cod : 200
      */
 
-    @PrimaryKey(autoGenerate = true)
-    private int cityId;
     @SerializedName("base")
     @Expose
     private String base;
@@ -41,12 +40,20 @@ public class WeatherResponse {
     @SerializedName("id")
     @Expose
     private int id;
+    @PrimaryKey
+    @NonNull
     @SerializedName("name")
     @Expose
     private String name;
     @SerializedName("weather")
     @Expose
     private List<WeatherDetails> weather;
+    @SerializedName("dt")
+    @Expose
+    private long time;
+    @SerializedName("wind")
+    @Expose
+    private WindDetails windDetails;
 
     public String getBase() {
         return base;
@@ -191,11 +198,46 @@ public class WeatherResponse {
         }
     }
 
-    public int getCityId() {
-        return cityId;
+
+    public static class WindDetails {
+        /**
+         * speed : 4.1
+         * deg : 80
+         */
+
+        private double speed;
+        private int deg;
+
+        public double getSpeed() {
+            return speed;
+        }
+
+        public void setSpeed(double speed) {
+            this.speed = speed;
+        }
+
+        public int getDeg() {
+            return deg;
+        }
+
+        public void setDeg(int deg) {
+            this.deg = deg;
+        }
     }
 
-    public void setCityId(int cityId) {
-        this.cityId = cityId;
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
+    }
+
+    public WindDetails getWindDetails() {
+        return windDetails;
+    }
+
+    public void setWindDetails(WindDetails windDetails) {
+        this.windDetails = windDetails;
     }
 }

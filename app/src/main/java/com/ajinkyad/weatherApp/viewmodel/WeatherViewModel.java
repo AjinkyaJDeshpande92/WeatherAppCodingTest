@@ -23,11 +23,8 @@ public class WeatherViewModel extends ViewModel {
         weatherResponseLiveData = new MutableLiveData<>();
     }
 
-    public void getWeatherDetails(String cityName) {
+    public LiveData<WeatherResponse> getWeatherDetails(String cityName) {
         weatherResponseLiveData = weatherRepository.getWeatherDetails(cityName);
-    }
-
-    public LiveData<WeatherResponse> getWeatherResponseLiveData() {
         return weatherResponseLiveData;
     }
 

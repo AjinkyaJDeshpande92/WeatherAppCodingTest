@@ -33,4 +33,14 @@ public class WeatherDataConverters {
         return GenericTypeConverter.convertJavaObjectToJson(contentResponses);
     }
 
+    @TypeConverter
+    public static WeatherResponse.WindDetails stringtoWindDetails(String response) {
+        return GenericTypeConverter.convertJsonToJavaObject(response, WeatherResponse.WindDetails.class);
+    }
+
+    @TypeConverter
+    public static String windDetailsToString(WeatherResponse.WindDetails contentResponses) {
+        return GenericTypeConverter.convertJavaObjectToJson(contentResponses);
+    }
+
 }
