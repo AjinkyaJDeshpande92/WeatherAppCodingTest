@@ -1,6 +1,7 @@
 package com.ajinkyad.weatherApp.viewmodel;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ajinkyad.weatherApp.repository.WeatherRepository;
@@ -17,10 +18,11 @@ public class WeatherViewModel extends ViewModel {
     @Inject
     WeatherViewModel(WeatherRepository weatherRepository) {
         this.weatherRepository = weatherRepository;
+        weatherResponseLiveData = new MutableLiveData<>();
     }
 
-    public void getOrders() {
-        weatherResponseLiveData = weatherRepository.getOrders();
+    public void getWeatherDetails(String cityName) {
+        weatherResponseLiveData = weatherRepository.getWeatherDetails(cityName);
     }
 
     public LiveData<WeatherResponse> getWeatherResponseLiveData() {

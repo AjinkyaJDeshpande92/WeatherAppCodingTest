@@ -7,17 +7,34 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.ajinkyad.weatherApp.R;
+import com.ajinkyad.weatherApp.repository.model.WeatherResponse;
+import com.ajinkyad.weatherApp.viewmodel.WeatherViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import javax.inject.Inject;
+
+import dagger.android.AndroidInjection;
+
 public class ScrollingActivity extends AppCompatActivity {
+
+    @Inject
+    public ViewModelProvider.Factory viewModelFactory;
+    private WeatherViewModel weatherViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
+        initViewModel();
+        observeWeatherDetails();
+        fetchWeatherDetails();
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -29,6 +46,25 @@ public class ScrollingActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+    }
+
+    private void observeWeatherDetails() {
+
+        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
+            @Override
+            public void onChanged(WeatherResponse weatherResponse) {
+
+            }
+        });
+    }
+
+    private void fetchWeatherDetails() {
+        weatherViewModel.getWeatherDetails("London");
+    }
+
+    private void initViewModel() {
+        AndroidInjection.inject(this);
+        weatherViewModel = ViewModelProviders.of(this, viewModelFactory).get(WeatherViewModel.class);
     }
 
     @Override

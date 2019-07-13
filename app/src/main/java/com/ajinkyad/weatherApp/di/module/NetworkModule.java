@@ -15,6 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetworkModule {
 
+    private static String HOST = BuildConfig.BASE_URL_PROTOCOL.toLowerCase() + "://" + BuildConfig.BASE_URL + "/";
+
     @Provides
     @Singleton
     OkHttpClient okHttpClient() {
@@ -25,11 +27,15 @@ public class NetworkModule {
     @Provides
     @Singleton
     Retrofit provideRetrofitClient(@NonNull OkHttpClient okHttpClient) {
-        String BASE_URL = BuildConfig.BASE_URL;
         return new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl(getDomainName())
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create()) // Serialize Objects
                 .build();
+    }
+
+
+    private static String getDomainName() {
+        return HOST;
     }
 }
