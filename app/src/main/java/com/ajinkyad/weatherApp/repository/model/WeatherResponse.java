@@ -1,11 +1,18 @@
 package com.ajinkyad.weatherApp.repository.model;
 
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
+import com.ajinkyad.weatherApp.database.converters.WeatherDataConverters;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
+@Entity
+@TypeConverters({WeatherDataConverters.class})
 public class WeatherResponse {
 
     /**
@@ -23,50 +30,23 @@ public class WeatherResponse {
      * cod : 200
      */
 
-    @SerializedName("coord")
-    @Expose
-    private CoordinateDetails coordinates;
+    @PrimaryKey(autoGenerate = true)
+    private int cityId;
     @SerializedName("base")
     @Expose
     private String base;
     @SerializedName("main")
     @Expose
     private MainDetails main;
-    @SerializedName("visibility")
-    @Expose
-    private int visibility;
-    @SerializedName("wind")
-    @Expose
-    private WindDetails wind;
-    @SerializedName("clouds")
-    @Expose
-    private CloudDetails clouds;
-    @SerializedName("dt")
-    @Expose
-    private int dt;
-    @SerializedName("sys")
-    @Expose
-    private SystemDetails sys;
     @SerializedName("id")
     @Expose
     private int id;
     @SerializedName("name")
     @Expose
     private String name;
-    @SerializedName("cod")
-    @Expose
-    private int cod;
     @SerializedName("weather")
     @Expose
     private List<WeatherDetails> weather;
-
-    public CoordinateDetails getCoordinates() {
-        return coordinates;
-    }
-
-    public void setCoordinates(CoordinateDetails coordinates) {
-        this.coordinates = coordinates;
-    }
 
     public String getBase() {
         return base;
@@ -84,45 +64,6 @@ public class WeatherResponse {
         this.main = main;
     }
 
-    public int getVisibility() {
-        return visibility;
-    }
-
-    public void setVisibility(int visibility) {
-        this.visibility = visibility;
-    }
-
-    public WindDetails getWind() {
-        return wind;
-    }
-
-    public void setWind(WindDetails wind) {
-        this.wind = wind;
-    }
-
-    public CloudDetails getClouds() {
-        return clouds;
-    }
-
-    public void setClouds(CloudDetails clouds) {
-        this.clouds = clouds;
-    }
-
-    public int getDt() {
-        return dt;
-    }
-
-    public void setDt(int dt) {
-        this.dt = dt;
-    }
-
-    public SystemDetails getSys() {
-        return sys;
-    }
-
-    public void setSys(SystemDetails sys) {
-        this.sys = sys;
-    }
 
     public int getId() {
         return id;
@@ -140,46 +81,12 @@ public class WeatherResponse {
         this.name = name;
     }
 
-    public int getCod() {
-        return cod;
-    }
-
-    public void setCod(int cod) {
-        this.cod = cod;
-    }
-
     public List<WeatherDetails> getWeather() {
         return weather;
     }
 
     public void setWeather(List<WeatherDetails> weather) {
         this.weather = weather;
-    }
-
-    public static class CoordinateDetails {
-        /**
-         * lon : -0.13
-         * lat : 51.51
-         */
-
-        private double lon;
-        private double lat;
-
-        public double getLon() {
-            return lon;
-        }
-
-        public void setLon(double lon) {
-            this.lon = lon;
-        }
-
-        public double getLat() {
-            return lat;
-        }
-
-        public void setLat(double lat) {
-            this.lat = lat;
-        }
     }
 
     public static class MainDetails {
@@ -238,114 +145,6 @@ public class WeatherResponse {
         }
     }
 
-    public static class WindDetails {
-        /**
-         * speed : 4.1
-         * deg : 80
-         */
-
-        private double speed;
-        private int deg;
-
-        public double getSpeed() {
-            return speed;
-        }
-
-        public void setSpeed(double speed) {
-            this.speed = speed;
-        }
-
-        public int getDeg() {
-            return deg;
-        }
-
-        public void setDeg(int deg) {
-            this.deg = deg;
-        }
-    }
-
-    public static class CloudDetails {
-        /**
-         * all : 90
-         */
-
-        private int all;
-
-        public int getAll() {
-            return all;
-        }
-
-        public void setAll(int all) {
-            this.all = all;
-        }
-    }
-
-    public static class SystemDetails {
-        /**
-         * type : 1
-         * id : 5091
-         * message : 0.0103
-         * country : GB
-         * sunrise : 1485762037
-         * sunset : 1485794875
-         */
-
-        private int type;
-        private int id;
-        private double message;
-        private String country;
-        private int sunrise;
-        private int sunset;
-
-        public int getType() {
-            return type;
-        }
-
-        public void setType(int type) {
-            this.type = type;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public double getMessage() {
-            return message;
-        }
-
-        public void setMessage(double message) {
-            this.message = message;
-        }
-
-        public String getCountry() {
-            return country;
-        }
-
-        public void setCountry(String country) {
-            this.country = country;
-        }
-
-        public int getSunrise() {
-            return sunrise;
-        }
-
-        public void setSunrise(int sunrise) {
-            this.sunrise = sunrise;
-        }
-
-        public int getSunset() {
-            return sunset;
-        }
-
-        public void setSunset(int sunset) {
-            this.sunset = sunset;
-        }
-    }
-
     public static class WeatherDetails {
         /**
          * id : 300
@@ -390,5 +189,13 @@ public class WeatherResponse {
         public void setIcon(String icon) {
             this.icon = icon;
         }
+    }
+
+    public int getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(int cityId) {
+        this.cityId = cityId;
     }
 }
