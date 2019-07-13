@@ -7,12 +7,10 @@ import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.ajinkyad.weatherApp.R;
-import com.ajinkyad.weatherApp.repository.model.WeatherResponse;
 import com.ajinkyad.weatherApp.viewmodel.WeatherViewModel;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -32,8 +30,8 @@ public class ScrollingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scrolling);
         initViewModel();
+        fetchCitiesList();
         observeWeatherDetails();
-        fetchWeatherDetails();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -48,18 +46,26 @@ public class ScrollingActivity extends AppCompatActivity {
         });
     }
 
-    private void observeWeatherDetails() {
+    private void fetchCitiesList() {
+        weatherViewModel.getCitiesList().observe(this, citiesResponseList -> {
 
-        weatherViewModel.getWeatherResponseLiveData().observe(this, new Observer<WeatherResponse>() {
-            @Override
-            public void onChanged(WeatherResponse weatherResponse) {
-
+            if (citiesResponseList != null && !citiesResponseList.isEmpty()) {
+                //WE have some data in the Cities List
+                //Get the 0th Index and render as default data to the User.
+                fetchWeatherDetails(citiesResponseList.get(0).getName());
             }
         });
     }
 
-    private void fetchWeatherDetails() {
-        weatherViewModel.getWeatherDetails("London");
+    private void observeWeatherDetails() {
+
+        weatherViewModel.getWeatherResponseLiveData().observe(this, weatherResponse -> {
+
+        });
+    }
+
+    private void fetchWeatherDetails(String cityName) {
+        weatherViewModel.getWeatherDetails(cityName);
     }
 
     private void initViewModel() {
