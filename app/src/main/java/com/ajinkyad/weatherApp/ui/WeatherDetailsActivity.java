@@ -1,7 +1,6 @@
 package com.ajinkyad.weatherApp.ui;
 
 import android.os.Bundle;
-import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -18,13 +17,15 @@ import com.ajinkyad.weatherApp.repository.model.WeatherResponse;
 import com.ajinkyad.weatherApp.viewmodel.WeatherViewModel;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 import javax.inject.Inject;
 
 import dagger.android.AndroidInjection;
+
+import static com.ajinkyad.weatherApp.utils.WeatherUtils.getDisplayTimeFromMillis;
+import static com.ajinkyad.weatherApp.utils.WeatherUtils.getSpinnerCityDataset;
+import static com.ajinkyad.weatherApp.utils.WeatherUtils.getWeatherDetails;
 
 public class WeatherDetailsActivity extends AppCompatActivity {
 
@@ -96,16 +97,6 @@ public class WeatherDetailsActivity extends AppCompatActivity {
         spinnerArrayAdapter.notifyDataSetChanged();
     }
 
-    private ArrayList<String> getSpinnerCityDataset(List<CitiesResponse> citiesResponseList) {
-
-        ArrayList<String> citiesList = new ArrayList<>();
-
-        for (CitiesResponse cityItem : citiesResponseList) {
-            citiesList.add(cityItem.getName());
-        }
-        return citiesList;
-    }
-
     private void setWeatherDetails(WeatherResponse weatherResponse) {
         dataBinding.setCity(weatherResponse.getName());
         dataBinding.setTemperature(weatherResponse.getMain().getTemp() + " \u2109");
@@ -115,23 +106,6 @@ public class WeatherDetailsActivity extends AppCompatActivity {
         dataBinding.weatherSwipeRefreshLayout.setRefreshing(false);
     }
 
-    private String getDisplayTimeFromMillis(long timestamp) {
-
-        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
-        cal.setTimeInMillis(timestamp);
-
-        return DateFormat.format("EEEE hh:mm a", cal).toString();
-    }
-
-    private String getWeatherDetails(WeatherResponse weatherResponse) {
-
-        if (weatherResponse != null && weatherResponse.getWeather() != null && !weatherResponse.getWeather().isEmpty()) {
-            //We have some valid Data
-            //Lets display it to the User.
-            return weatherResponse.getWeather().get(0).getMain() + " - " + weatherResponse.getWeather().get(0).getDescription();
-        }
-        return null;
-    }
 
     private void fetchWeatherDetails(String cityName) {
         weatherViewModel.getWeatherDetails(cityName).observe(this, weatherResponse -> {
