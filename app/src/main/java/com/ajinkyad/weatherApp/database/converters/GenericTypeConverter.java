@@ -7,10 +7,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 /**
- * Created by anthony on 12/27/17.
- */
-
-/**
  * Utility class for serialization and de-serialization for storing and fetching from Room DB
  */
 public class GenericTypeConverter {

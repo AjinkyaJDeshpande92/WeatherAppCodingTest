@@ -6,10 +6,6 @@ import com.ajinkyad.weatherApp.repository.model.WeatherResponse;
 
 import java.util.List;
 
-/**
- * Created by anthony on 12/27/17.
- */
-
 public class WeatherDataConverters {
 
     @TypeConverter
